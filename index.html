@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Recherche véhicule</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Recherche véhicule</h1>
+
+  <form id="searchForm">
+    <label>
+      Numéro de châssis (VIN) :
+      <input type="text" id="vinInput" required>
+    </label>
+    <br><br>
+    <label>
+      1ère mise en circulation :
+      <input type="date" id="mecInput" required>
+    </label>
+    <br><br>
+    <button type="submit">Rechercher</button>
+  </form>
+
+  <div id="message"></div>
+  <div id="result"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
