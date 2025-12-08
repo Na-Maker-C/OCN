@@ -1,5 +1,5 @@
 const form = document.getElementById("searchForm");
-const vinInput = document.getElementById("vinInput");
+const vinInput = document.getElementById("vinInput");  // on garde le champ mais le nom n'a pas d’importance
 const mecInput = document.getElementById("mecInput");
 const messageDiv = document.getElementById("message");
 const resultDiv = document.getElementById("result");
@@ -7,15 +7,15 @@ const resultDiv = document.getElementById("result");
 form.addEventListener("submit", function (event) {
   event.preventDefault();
 
-  const vin = vinInput.value.trim().toUpperCase();
-  const mec = mecInput.value; // format AAAA-MM-JJ
+  const homologation = vinInput.value.trim().toUpperCase(); // anciennement VIN
+  const mec = mecInput.value; 
 
   // On efface les anciens messages / résultats
   messageDiv.textContent = "";
   resultDiv.innerHTML = "";
 
   // Vérifie que les deux champs sont remplis
-  if (!vin || !mec) {
+  if (!homologation || !mec) {
     messageDiv.textContent = "Merci de remplir les deux champs.";
     return;
   }
@@ -40,15 +40,15 @@ form.addEventListener("submit", function (event) {
 
   const tbody = document.createElement("tbody");
 
-  // Ligne 1 : Numéro de châssis
-  const rowVin = document.createElement("tr");
-  const cellKeyVin = document.createElement("td");
-  const cellValueVin = document.createElement("td");
-  cellKeyVin.textContent = "Numéro de châssis (VIN)";
-  cellValueVin.textContent = vin;
-  rowVin.appendChild(cellKeyVin);
-  rowVin.appendChild(cellValueVin);
-  tbody.appendChild(rowVin);
+  // Ligne 1 : Numéro d'homologation
+  const rowHom = document.createElement("tr");
+  const cellKeyHom = document.createElement("td");
+  const cellValueHom = document.createElement("td");
+  cellKeyHom.textContent = "Numéro d'homologation";
+  cellValueHom.textContent = homologation;
+  rowHom.appendChild(cellKeyHom);
+  rowHom.appendChild(cellValueHom);
+  tbody.appendChild(rowHom);
 
   // Ligne 2 : 1ère mise en circulation
   const rowMec = document.createElement("tr");
@@ -74,9 +74,6 @@ form.addEventListener("submit", function (event) {
   linkE.rel = "noopener noreferrer";
   linkE.textContent = "OETV, art. 72 a (lien)";
 
-  // Si tu veux afficher aussi l’URL en texte, tu peux ajouter :
-  // cellValueE.textContent = "OETV, art. 72 a (https://www.fedlex.admin.ch/eli/cc/1995/4425_4425_4425/fr#art_72_a)";
-  // mais ici on fait un lien propre :
   cellValueE.appendChild(linkE);
 
   rowEclairage.appendChild(cellKeyE);
