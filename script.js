@@ -1,34 +1,3 @@
-// Liste de véhicules (exemple)
-const vehicules = [
-  {
-    vin: "VF1AAAAAA12345678",
-    mec: "2020-05-12",  // AAAA-MM-JJ
-    marque: "Renault",
-    modele: "Clio",
-    energie: "Essence",
-    puissance: "90 ch",
-    couleur: "Rouge"
-  },
-  {
-    vin: "WVWBBBBBB87654321",
-    mec: "2018-10-03",
-    marque: "Volkswagen",
-    modele: "Golf",
-    energie: "Diesel",
-    puissance: "110 ch",
-    couleur: "Bleu"
-  },
-  {
-    vin: "WAUCCCCCC13572468",
-    mec: "2022-01-20",
-    marque: "Audi",
-    modele: "A3",
-    energie: "Hybride",
-    puissance: "150 ch",
-    couleur: "Noir"
-  }
-];
-
 const form = document.getElementById("searchForm");
 const vinInput = document.getElementById("vinInput");
 const mecInput = document.getElementById("mecInput");
@@ -45,22 +14,14 @@ form.addEventListener("submit", function (event) {
   messageDiv.textContent = "";
   resultDiv.innerHTML = "";
 
+  // Vérifie que les deux champs sont remplis
   if (!vin || !mec) {
     messageDiv.textContent = "Merci de remplir les deux champs.";
     return;
   }
 
-  // On cherche le véhicule
-  const vehicule = vehicules.find(
-    v => v.vin.toUpperCase() === vin && v.mec === mec
-  );
-
-  if (!vehicule) {
-    messageDiv.textContent = "Aucun véhicule trouvé avec ces informations.";
-    return;
-  }
-
-  messageDiv.textContent = "Véhicule trouvé :";
+  // Message au-dessus du tableau
+  messageDiv.textContent = "Fiche générée :";
 
   // Création du tableau type Excel
   const table = document.createElement("table");
@@ -79,65 +40,49 @@ form.addEventListener("submit", function (event) {
 
   const tbody = document.createElement("tbody");
 
-  // Lignes pour chaque propriété du véhicule
-  for (const [key, value] of Object.entries(vehicule)) {
-    const row = document.createElement("tr");
+  // Ligne 1 : Numéro de châssis
+  const rowVin = document.createElement("tr");
+  const cellKeyVin = document.createElement("td");
+  const cellValueVin = document.createElement("td");
+  cellKeyVin.textContent = "Numéro de châssis (VIN)";
+  cellValueVin.textContent = vin;
+  rowVin.appendChild(cellKeyVin);
+  rowVin.appendChild(cellValueVin);
+  tbody.appendChild(rowVin);
 
-    const cellKey = document.createElement("td");
-    const cellValue = document.createElement("td");
+  // Ligne 2 : 1ère mise en circulation
+  const rowMec = document.createElement("tr");
+  const cellKeyMec = document.createElement("td");
+  const cellValueMec = document.createElement("td");
+  cellKeyMec.textContent = "1ère mise en circulation";
+  cellValueMec.textContent = mec;
+  rowMec.appendChild(cellKeyMec);
+  rowMec.appendChild(cellValueMec);
+  tbody.appendChild(rowMec);
 
-    let label;
-    switch (key) {
-      case "vin": label = "Numéro de châssis (VIN)"; break;
-      case "mec": label = "1ère mise en circulation"; break;
-      case "marque": label = "Marque"; break;
-      case "modele": label = "Modèle"; break;
-      case "energie": label = "Énergie"; break;
-      case "puissance": label = "Puissance"; break;
-      case "couleur": label = "Couleur"; break;
-      default: label = key;
-    }
-
-    cellKey.textContent = label;
-    cellValue.textContent = value;
-
-    row.appendChild(cellKey);
-    row.appendChild(cellValue);
-    tbody.appendChild(row);
-  }
-
-  // 🔽🔽🔽 AJOUT DU CHAMP "Éclairage" 🔽🔽🔽
-
+  // Ligne 3 : Éclairage
   const rowEclairage = document.createElement("tr");
-
   const cellKeyE = document.createElement("td");
-  cellKeyE.textContent = "Éclairage";
-
   const cellValueE = document.createElement("td");
 
-  // Création d'un lien cliquable vers l'article OETV, art. 72 a
+  cellKeyE.textContent = "Éclairage";
+
+  // Lien cliquable vers l'article OETV, art. 72 a
   const linkE = document.createElement("a");
   linkE.href = "https://www.fedlex.admin.ch/eli/cc/1995/4425_4425_4425/fr#art_72_a";
   linkE.target = "_blank";
   linkE.rel = "noopener noreferrer";
-  linkE.textContent = "OETV, art. 72 a";
+  linkE.textContent = "OETV, art. 72 a (lien)";
 
-  // Si tu veux exactement le format texte "OETV, art,72 a (https://...)",
-  // tu peux aussi faire :
+  // Si tu veux afficher aussi l’URL en texte, tu peux ajouter :
   // cellValueE.textContent = "OETV, art. 72 a (https://www.fedlex.admin.ch/eli/cc/1995/4425_4425_4425/fr#art_72_a)";
-  // mais là on fait un lien cliquable plus propre :
+  // mais ici on fait un lien propre :
   cellValueE.appendChild(linkE);
 
   rowEclairage.appendChild(cellKeyE);
   rowEclairage.appendChild(cellValueE);
   tbody.appendChild(rowEclairage);
 
-  // 🔼🔼🔼 FIN DU CHAMP "Éclairage" 🔼🔼🔼
-
   table.appendChild(tbody);
   resultDiv.appendChild(table);
-
-  // (Optionnel) si tu as encore le code pour ouvrir l'Excel, tu le laisses ici
-  // const excelFile = `excels/fiche-${mec}.xlsx`;
-  // window.open(excelFile, "_blank");
 });
