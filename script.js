@@ -1,5 +1,5 @@
 const form = document.getElementById("searchForm");
-const vinInput = document.getElementById("vinInput");  // on garde le champ mais le nom n'a pas d’importance
+const homologationInput = document.getElementById("homologationInput");
 const mecInput = document.getElementById("mecInput");
 const messageDiv = document.getElementById("message");
 const resultDiv = document.getElementById("result");
@@ -7,8 +7,8 @@ const resultDiv = document.getElementById("result");
 form.addEventListener("submit", function (event) {
   event.preventDefault();
 
-  const homologation = vinInput.value.trim().toUpperCase(); // anciennement VIN
-  const mec = mecInput.value; 
+  const homologation = homologationInput.value.trim().toUpperCase();
+  const mec = mecInput.value; // format AAAA-MM-JJ (du champ date)
 
   // On efface les anciens messages / résultats
   messageDiv.textContent = "";
@@ -23,13 +23,13 @@ form.addEventListener("submit", function (event) {
   // Message au-dessus du tableau
   messageDiv.textContent = "Fiche générée :";
 
-  // Création du tableau type Excel
+  // Création du tableau type “Excel”
   const table = document.createElement("table");
 
   const thead = document.createElement("thead");
   const headerRow = document.createElement("tr");
 
-  ["Champ", "Valeur"].forEach(h => {
+  ["Champ", "Valeur"].forEach((h) => {
     const th = document.createElement("th");
     th.textContent = h;
     headerRow.appendChild(th);
@@ -67,12 +67,11 @@ form.addEventListener("submit", function (event) {
 
   cellKeyE.textContent = "Éclairage";
 
-  // Lien cliquable vers l'article OETV, art. 72 a
   const linkE = document.createElement("a");
   linkE.href = "https://www.fedlex.admin.ch/eli/cc/1995/4425_4425_4425/fr#art_72_a";
   linkE.target = "_blank";
   linkE.rel = "noopener noreferrer";
-  linkE.textContent = "OETV, art. 72 a (lien)";
+  linkE.textContent = "OETV, art. 72 a";
 
   cellValueE.appendChild(linkE);
 
