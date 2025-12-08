@@ -2,16 +2,16 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Recherche véhicule</title>
+  <title>Fiche véhicule</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Recherche véhicule</h1>
+  <h1>Fiche véhicule</h1>
 
   <form id="searchForm">
     <label>
-      Numéro de châssis (VIN) :
-      <input type="text" id="vinInput" required>
+      Numéro d'homologation :
+      <input type="text" id="homologationInput" required>
     </label>
     <br><br>
     <label>
@@ -19,7 +19,7 @@
       <input type="date" id="mecInput" required>
     </label>
     <br><br>
-    <button type="submit">Rechercher</button>
+    <button type="submit">Générer la fiche</button>
   </form>
 
   <div id="message"></div>
