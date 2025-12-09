@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Application – Références réglementaires</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f3f4f6;
+      color: #111827;
+    }
+    header {
+      background: #111827;
+      color: white;
+      padding: 1rem 1.5rem;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.4rem;
+    }
+    main {
+      max-width: 960px;
+      margin: 1.5rem auto 3rem;
+      padding: 0 1rem;
+    }
+    .card {
+      background: white;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+      margin-bottom: 1.5rem;
+    }
+    .card h2 {
+      margin-top: 0;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+    label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+    }
+    input, select {
+      width: 100%;
+      padding: 0.5rem 0.6rem;
+      border-radius: 0.5rem;
+      border: 1px solid #d1d5db;
+      font-size: 0.95rem;
+      box-sizing: border-box;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 1px #4f46e5;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    @media (min-width: 640px) {
+      .form-row {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    button {
+      margin-top: 1rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: 999px;
+      border: none;
+      background: #4f46e5;
+      color: white;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #4338ca;
+    }
+    .secondary-btn {
+      background: #e5e7eb;
+      color: #111827;
+      margin-right: 0.5rem;
+    }
+    .secondary-btn:hover {
+      background: #d1d5db;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.15rem 0.6rem;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #3730a3;
+      font-size: 0.8rem;
+      margin-right: 0.4rem;
+      margin-bottom: 0.3rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+    th, td {
+      padding: 0.5rem 0.4rem;
+      border-bottom: 1px solid #e5e7eb;
+      vertical-align: top;
+    }
+    th {
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: #6b7280;
+    }
+    a {
+      color: #2563eb;
+      text-decoration: none;
+      word-break: break-all;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .badge {
+      padding: 0.1rem 0.4rem;
+      border-radius: 0.35rem;
+      background: #e5e7eb;
+      font-size: 0.75rem;
+      display: inline-block;
+    }
+    .muted {
+      color: #6b7280;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Application – Références d’éclairage (CH / UE)</h1>
+  </header>
+
+  <main>
+    <!-- Écran 1 : masque initial -->
+    <section id="step1" class="card">
+      <h2>1. Paramètres du véhicule</h2>
+      <p class="muted">
+        Saisis la date de 1<sup>ère</sup> mise en circulation et la catégorie (M1, N1, O, P, L, etc.).
+        Ces informations seront utilisées pour ouvrir la fiche correspondante.
+      </p>
+
+      <form id="entry-form">
+        <div class="form-row">
+          <div>
+            <label for="firstRegDate">Date 1<sup>ère</sup> mise en circulation</label>
+            <input type="date" id="firstRegDate" required />
+          </div>
+          <div>
+            <label for="category">Catégorie</label>
+            <select id="category" required>
+              <option value="">-- Sélectionner --</option>
+              <option value="M1">M1</option>
+              <option value="M2">M2</option>
+              <option value="M3">M3</option>
+              <option value="N1">N1</option>
+              <option value="N2">N2</option>
+              <option value="N3">N3</option>
+              <option value="O1">O1</option>
+              <option value="O2">O2</option>
+              <option value="O3">O3</option>
+              <option value="O4">O4</option>
+              <option value="L">L</option>
+              <option value="P">P</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit">Ouvrir la fiche</button>
+      </form>
+    </section>
+
+    <!-- Écran 2 : fiche -->
+    <section id="step2" class="card" style="display:none;">
+      <h2>2. Fiche réglementaire</h2>
+      <p class="muted" id="selection-summary"></p>
+
+      <div id="regulations-container">
+        <p class="muted">Chargement des données…</p>
+      </div>
+
+      <div style="margin-top:1rem;">
+        <button type="button" class="secondary-btn" id="back-btn">← Modifier les paramètres</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // État simple coté client
+    let regulationsData = [];
+
+    // 1. Charger le JSON généré depuis l’Excel
+    async function loadRegulations() {
+      try {
+        const res = await fetch("regulations.json"); // à placer à la racine du repo
+        if (!res.ok) {
+          throw new Error("Impossible de charger regulations.json");
+        }
+        regulationsData = await res.json();
+        renderRegulations();
+      } catch (e) {
+        const container = document.getElementById("regulations-container");
+        container.innerHTML = "<p style='color:#b91c1c;'>Erreur : " + e.message +
+          "<br>Vérifie que le fichier <code>regulations.json</code> est bien présent à côté de <code>index.html</code>.</p>";
+      }
+    }
+
+    // 2. Rendu de la fiche à partir des données
+    function renderRegulations(filter = {}) {
+      const container = document.getElementById("regulations-container");
+
+      // TODO : ici tu pourras filtrer selon la date & la catégorie
+      // par exemple : const filtered = regulationsData.filter(row => ...);
+      const filtered = regulationsData; // pour l'instant : on affiche tout
+
+      if (!filtered || filtered.length === 0) {
+        container.innerHTML = "<p class='muted'>Aucune donnée disponible.</p>";
+        return;
+      }
+
+      let html = "<table>";
+      html += `
+        <thead>
+          <tr>
+            <th>Définition</th>
+            <th>CH</th>
+            <th>Article</th>
+            <th>CH – Lien</th>
+            <th>UE / ECE</th>
+            <th>Autres directives</th>
+          </tr>
+        </thead>
+        <tbody>
+      `;
+
+      for (const row of filtered) {
+        const def = row["Déf."] || "";
+        const ch = row["CH"] || "";
+        const article = (row["Article"] !== null && row["Article"] !== undefined) ? row["Article"] : "";
+        const linkCH = row["Link"] || null;
+        const eu = row["EU"] || "";
+        const numEU = row["N°"] || "";
+        const linkEU = row["Link.1"] || null;
+        const otherDir = row["Directives, autres"] || "";
+        const numOther = row["N°.1"] || "";
+        const linkOther = row["Link.2"] || null;
+
+        html += "<tr>";
+        html += `<td><strong>${def}</strong></td>`;
+        html += `<td>${ch}</td>`;
+        html += `<td>${article}</td>`;
+        html += `<td>`;
+        if (linkCH) {
+          html += `<a href="${linkCH}" target="_blank" rel="noopener noreferrer">Texte CH</a>`;
+        } else {
+          html += `<span class="muted">–</span>`;
+        }
+        html += `</td>`;
+
+        html += `<td>`;
+        if (eu || numEU) {
+          html += `<span class="badge">${eu || ""} ${numEU || ""}</span>`;
+          if (linkEU) {
+            html += `<br><a href="${linkEU}" target="_blank" rel="noopener noreferrer">Texte UE / ECE</a>`;
+          }
+        } else {
+          html += `<span class="muted">–</span>`;
+        }
+        html += `</td>`;
+
+        html += `<td>`;
+        if (otherDir || numOther || linkOther) {
+          if (otherDir) html += `<span class="badge">${otherDir}</span> `;
+          if (numOther) html += `<span class="badge">${numOther}</span> `;
+          if (linkOther) html += `<br><a href="${linkOther}" target="_blank" rel="noopener noreferrer">Lien</a>`;
+        } else {
+          html += `<span class="muted">–</span>`;
+        }
+        html += `</td>`;
+
+        html += "</tr>";
+      }
+
+      html += "</tbody></table>";
+      container.innerHTML = html;
+    }
+
+    // 3. Gestion du formulaire (masque 1)
+    const form = document.getElementById("entry-form");
+    const step1 = document.getElementById("step1");
+    const step2 = document.getElementById("step2");
+    const selectionSummary = document.getElementById("selection-summary");
+    const backBtn = document.getElementById("back-btn");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const date = document.getElementById("firstRegDate").value;
+      const category = document.getElementById("category").value;
+
+      // Afficher le résumé sur la fiche
+      selectionSummary.innerHTML = `
+        <span class="pill">Date 1<sup>ère</sup> mise en circ. : ${date || "-"}</span>
+        <span class="pill">Catégorie : ${category || "-"}</span>
+        <br><span class="muted">La logique de filtrage selon ces paramètres pourra être affinée ici.</span>
+      `;
+
+      // Basculer vers la fiche
+      step1.style.display = "none";
+      step2.style.display = "block";
+
+      // Exemple : tu pourrais appeler renderRegulations({ date, category }) plus tard
+      renderRegulations({ date, category });
+    });
+
+    backBtn.addEventListener("click", function () {
+      step2.style.display = "none";
+      step1.style.display = "block";
+    });
+
+    // Charger les données dès le début
+    loadRegulations();
+  </script>
+</body>
+</html>

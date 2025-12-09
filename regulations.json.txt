@@ -1,0 +1,17 @@
+import pandas as pd
+
+# 1. Lis ton fichier Excel
+df = pd.read_excel("Application_Test.xlsx")
+
+# 2. Remplace les NaN par None (plus propre en JSON)
+df = df.where(pd.notnull(df), None)
+
+# 3. Convertit en liste de dictionnaires
+data = df.to_dict(orient="records")
+
+# 4. Sauvegarde en JSON
+import json
+with open("regulations.json", "w", encoding="utf-8") as f:
+    json.dump(data, f, ensure_ascii=False, indent=2)
+
+print("Fichier regulations.json généré ✅")
